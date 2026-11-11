@@ -19,9 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. DARK / LIGHT MODE TOGGLE
     const themeToggleBtn = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme');
+    let savedTheme = null;
 
-    // Apply saved theme on page load
+    try {
+        savedTheme = localStorage.getItem('theme');
+    } catch (e) {
+        console.warn('Storage access unavailable');
+    }
+
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         if (themeToggleBtn) themeToggleBtn.textContent = '☀️ Light';
@@ -32,7 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             themeToggleBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            try {
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            } catch (e) {
+                // Ignore storage restriction errors in local previewers
+            }
         });
     }
 
@@ -42,12 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop click event propagation
+            e.stopPropagation();
             hamburgerBtn.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
 
-        // Close hamburger when a link inside is clicked
+        // Close menu when a link inside is clicked
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburgerBtn.classList.remove('active');
@@ -63,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const name = document.getElementById('fullName').value.trim();
             const rating = document.getElementById('rating').value;
-            alert(`Thank you for your feedback, ${name}!\n\nYour ${rating}-star rating has been submitted.`);
+            alert(`Thank you for your feedback, ${name}!\n\nYour ${rating}-star rating has been recorded.`);
             feedbackForm.reset();
         });
     }
