@@ -1,64 +1,70 @@
-/* JAVA SCRIPT INTERACTIVE SCRIPTS */
+/* ==========================================================================
+   IM22503 Multimedia Web Programming - Main Script
+   ========================================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Highlight Active Navigation Link Based on Current URL
-    const currentPath = window.location.pathname.split("/").pop() || "index.html"; // Default to index.html if no path
-    const navLinks = document.querySelectorAll(".nav-links a");
+document.addEventListener('DOMContentLoaded', () => {
 
-    navLinks.forEach(link => {
-        const linkPath = link.getAttribute("href");
+    // 1. HIGHLIGHT ACTIVE NAV LINK
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const allNavLinks = document.querySelectorAll('.nav-links a');
+
+    allNavLinks.forEach(link => {
+        const linkPath = link.getAttribute('href');
         if (linkPath === currentPath) {
-            link.classList.add("active");
+            link.classList.add('active');
         } else {
-            link.classList.remove("active");
+            link.classList.remove('active');
         }
     });
 
-    // 2. Interactive Form Submission with Validation (comments.html)
-    const feedbackForm = document.getElementById('feedbackForm');
+    // 2. DARK / LIGHT MODE TOGGLE
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
 
-    if (feedbackForm) {
-        feedbackForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent default form submission behavior
-            
-            // Simple validation
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const rating = document.getElementById('rating').value;
-            const comments = document.getElementById('comments').value.trim();
+    // Apply saved theme on page load
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeToggleBtn) themeToggleBtn.textContent = '☀️ Light';
+    }
 
-            if (!name || !email || !rating || !comments) {
-                alert("Please fill in all fields before submitting.");
-                return;
-            }
-
-            // Submission Confirmation
-            alert(`Thank you for your feedback, ${name}! Your rating and comments have been submitted successfully.`);
-
-            // Clear the form after submission
-            feedbackForm.reset();
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            themeToggleBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
     }
 
-    // 3. Dynamic Scroll-Triggered Animations
-    const animatedCards = document.querySelectorAll('.project-card, .skill-item');
+    // 3. MOBILE HAMBURGER MENU TOGGLE
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
 
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                    observer.unobserve(entry.target); // Stop observing once the animation is triggered
-                }
+    if (hamburgerBtn && navLinks) {
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop click event propagation
+            hamburgerBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close hamburger when a link inside is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.classList.remove('active');
+                navLinks.classList.remove('active');
             });
-        }, {threshold: 0.1});
+        });
+    }
 
-        animatedCards.forEach(card => {
-            card.style.opacity = 0; // Initial state
-            card.style.transform = 'translateY(20px)'; // Initial state
-            card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'; // Smooth transition
-            cardObserver.observe(card);
+    // 4. COMMENTS FORM VALIDATION (comments.html)
+    const feedbackForm = document.getElementById('feedbackForm');
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('fullName').value.trim();
+            const rating = document.getElementById('rating').value;
+            alert(`Thank you for your feedback, ${name}!\n\nYour ${rating}-star rating has been submitted.`);
+            feedbackForm.reset();
         });
     }
 });
