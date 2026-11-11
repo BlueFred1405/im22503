@@ -9,20 +9,32 @@
 :root {
     --primary-color: #3a86ff;
     --secondary-color: #8338ec;
-    --dark-color: #1a1a2e;
-    --light-color: #f8f9fa;
+    --bg-color: #f8f9fa;
+    --nav-bg: #1a1a2e;
+    --nav-text: #cccccc;
     --card-bg: #ffffff;
     --text-color: #333333;
     --border-color: #e0e0e0; 
 }
 
+/* Dark Mode Overrides */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --nav-bg: #0f0f1a;
+    --nav-text: #ffffff;
+    --border-color: #333333;
+}
+
 body {
-    background-color: var(--light-color);
+    background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -34,10 +46,10 @@ body {
 
 /* HEADER STYLES AND NAVIGATION */
 header {
-    background-color: var(--dark-color);
-    color: var(--light-color);
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
+    position: relative;
     top: 0;
     z-index: 100;
 }
@@ -49,6 +61,7 @@ header {
     margin: 0 auto;
     align-items: center;
     padding: 1rem 2rem;
+    position: relative;
 }
 
 .logo {
@@ -63,6 +76,60 @@ header {
     display: flex;
     list-style: none;
     gap: 1.5rem;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: #ffffff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3 ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+/* here kitty, you can has cheezburgr (The Hamburger Icon) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    justify-content: space-between;
+    width: 25px;
+    height: 18px;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: all 0.3 ease;
+}
+
+/* Hamburger Active State Animation */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
 }
 
 .nav-links a {
@@ -129,7 +196,7 @@ header {
 
 .hero-content h1 {
     font-size: 2.5rem;
-    color: var(--dark-color);
+    color: var(--text-color);
     margin-bottom: 0.5rem;
 }
 
@@ -139,14 +206,14 @@ header {
 
 .tagline {
     font-size: 1.2rem;
-    color: var(--secondary-color);
+    color: var(--text-color);
     font-weight: 600;
     margin-bottom: 1rem;
 }
 
 .intro-text {
     margin-bottom: 1.5rem;
-    color: #555;
+    color: var(--text-color);
 }
 
 .btn {
@@ -173,7 +240,8 @@ header {
 }
 
 .biodata-card, .skills-section, .timetable-section {
-    background-color: var(--card-bg);
+    background: var(--card-bg);
+    color: var(--text-color);
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -199,7 +267,7 @@ header {
 }
 
 .skill-item {
-    background-color: var(--light-color);
+    background-color: var(--bg-color);
     padding: 1rem;
     border-radius: 6px;
     text-align: center;
@@ -240,7 +308,7 @@ header {
 }
 
 .styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: var(--bg-color);
 }
 
 .styled-table tbody tr:last-of-type {
@@ -285,7 +353,7 @@ header {
 
 .badge {
     display: inline-block;
-    background: #e0e7ff;
+    background: var(--bg-color);
     color: var(--primary-color);
     padding: 0.25rem 0.6rem;
     border-radius: 4px;
@@ -363,8 +431,8 @@ video {
 
 /* FOOTER STYLES */
 footer {
-    background-color: var(--dark-color);
-    color: #888888;
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
     text-align: center;
     padding: 1.5rem 0;
     margin-top: 3rem;
@@ -378,10 +446,27 @@ footer {
         gap: 1rem;
     }
 
+    .hamburger {
+        display: flex !important; /* Force hamburger visibility on small screens */
+    }
+
     .nav-links {
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--nav-bg);
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 0;
+        gap: 1.5rem;
+        display: none;
+        z-index: 999;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links.active {
+        display: flex !important;
     }
 
     .hero-section {
