@@ -1,1 +1,10 @@
-[📥 Download the Video File](https://github.com/BlueFred1405/im22503/Assets/"WELCOME HOME_CHARACTER SELECTION_by GROUP 2.mov")
+==============================================================================================
+Name: Hafiz Kelvin Wong Zhan Onn
+Matrix Number: BI24110294
+Email (Personal): hafizkelvin59@gmail.com
+Subject Code: IM22503
+Subject Name: Multimedia Web Programming
+==============================================================================================
+
+<-- Individual Assignment: Portfolio Website -->
+GitHub URL: https://bluefred1405.github.io/im22503/
